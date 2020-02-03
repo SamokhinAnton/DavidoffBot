@@ -1,6 +1,6 @@
-﻿using DavidoffBot.Interface;
+﻿using System.Threading.Tasks;
+using DavidoffBot.Interface;
 using Microsoft.Extensions.Logging;
-using System;
 using Telegram.Bot;
 using Telegram.Bot.Args;
 using Telegram.Bot.Types.Enums;
@@ -9,11 +9,12 @@ namespace DavidoffBot.Services
 {
     public class OnActionService : IOnActionService
     {
-        private ITelegramBotClient _botClient;
-        private ILogger _logger;
-        private IBaseRepository _repository;
+        private readonly ITelegramBotClient _botClient;
+        private readonly ILogger _logger;
+        private readonly IBaseRepository _repository;
 
-        public OnActionService(ILogger<OnActionService> logger, ITelegramBotClient botClient, IBaseRepository repository)
+        public OnActionService(ILogger<OnActionService> logger, ITelegramBotClient botClient,
+            IBaseRepository repository)
         {
             _botClient = botClient;
             _logger = logger;
@@ -38,7 +39,7 @@ namespace DavidoffBot.Services
             }
         }
 
-        private async void OnTextMessage(MessageEventArgs e)
+        private async Task OnTextMessage(MessageEventArgs e)
         {
             if (e.Message.Text != null)
             {
@@ -48,15 +49,14 @@ namespace DavidoffBot.Services
                     var message = await _repository.Get(item);
                     _logger.LogInformation(e.Message.Text);
                     _logger.LogInformation(message);
-                    
+
                     if (!string.IsNullOrEmpty(message))
                     {
-                        await _botClient.
-                            SendTextMessageAsync(
-                          chatId: e.Message.Chat,
-                          text: message,
-                          replyToMessageId: e.Message.MessageId
-                        );
+                        //await _botClient.SendTextMessageAsync(
+                        //    e.Message.Chat,
+                        //    message,
+                        //    replyToMessageId: e.Message.MessageId
+                        //);
                         return;
                     }
                 }
