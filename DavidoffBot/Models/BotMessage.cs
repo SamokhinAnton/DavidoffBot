@@ -5,11 +5,17 @@ namespace DavidoffBot.Models
 {
     public class BotMessage
     {
-        public Guid Id { get; set; }
+        public BotMessage()
+        {
+            BotMessageKeywords = new List<BotMessageKeyword>();
+            BotMessageUsers = new List<BotMessageUser>();
+        }
 
-        public List<User> Users { get; set; }
+        public int Id { get; set; }
 
-        public List<string> Keywords { get; set; }
+        public List<BotMessageUser> BotMessageUsers { get; set; }
+
+        public List<BotMessageKeyword> BotMessageKeywords { get; set; }
 
         public string Message { get; set; }
     }
